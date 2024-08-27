@@ -13,33 +13,34 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import CardWrapper from "./CardWrapper";
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/FormError";
 import FormSuccess from "@/components/FormSuccess";
-import { login } from "@/actions/login";
 import { Loader2 } from "lucide-react"
+import { signup } from "@/actions/signup"
 
-const LoginForm = () => {
+const SignupForm = () => {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | undefined>("")
   const [success, setSuccess] = useState<string | undefined>("")
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
+      name: ""
     }
   })
 
-  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setError("")
     setSuccess("")
 
     startTransition(() => {
-      login(values).then((data) => {
+      signup(values).then((data) => {
         setError(data?.error)
         setSuccess(data?.success)
       })
@@ -48,9 +49,9 @@ const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Welcome back"
-      footerTextLabel="Don't have an account?"
-      footerTextHref="/auth/sign-up"
+      headerLabel="Create an account"
+      footerTextLabel="Already have an account?"
+      footerTextHref="/auth/login"
       showSocial
     >
       <Form {...form}>
@@ -59,6 +60,15 @@ const LoginForm = () => {
           className={"space-y-6"}
         >
           <div className="space-y-4">
+          <FormField control={form.control} name={"name"} render={({field}) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder={"Waleed Rauf"} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
               <FormField control={form.control} name={"email"} render={({field}) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -82,7 +92,7 @@ const LoginForm = () => {
           <FormSuccess message={success} />
           <Button disabled={isPending} className="w-full" type="submit">
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Login
+            Sign Up
           </Button>
         </form>
       </Form>
@@ -90,4 +100,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;
