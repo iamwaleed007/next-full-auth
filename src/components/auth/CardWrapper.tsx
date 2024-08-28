@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 interface CardWrapperProps {
   children: React.ReactNode;
@@ -36,7 +38,11 @@ const CardWrapper = ({
       {showSocial && (
         <CardFooter>
           <Button
-            onClick={() => {}}
+            onClick={() => {
+              signIn("google", {
+                callbackUrl: DEFAULT_LOGIN_REDIRECT,
+              });
+            }}
             variant={"outline"}
             className="w-full flex gap-2"
           >

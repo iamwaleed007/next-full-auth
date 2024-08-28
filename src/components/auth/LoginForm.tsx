@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useTransition, useState } from "react"
-import { useForm } from "react-hook-form" 
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useTransition, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from "@/components/ui/form"
+  FormMessage,
+} from "@/components/ui/form";
 import CardWrapper from "./CardWrapper";
 import { LoginSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
@@ -19,32 +19,31 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/FormError";
 import FormSuccess from "@/components/FormSuccess";
 import { login } from "@/actions/login";
-import { Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react";
 
 const LoginForm = () => {
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
-      password: ""
-    }
-  })
+      password: "",
+    },
+  });
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    setError("")
-    setSuccess("")
+    setError("");
+    setSuccess("");
 
     startTransition(() => {
       login(values).then((data) => {
-        setError(data?.error)
-        setSuccess(data?.success)
-      })
-    })
-  }
+        setError(data?.error);
+      });
+    });
+  };
 
   return (
     <CardWrapper
@@ -54,29 +53,42 @@ const LoginForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form 
-          onSubmit={form.handleSubmit(onSubmit)}
-          className={"space-y-6"}
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-6"}>
           <div className="space-y-4">
-              <FormField control={form.control} name={"email"} render={({field}) => (
+            <FormField
+              control={form.control}
+              name={"email"}
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder={"anything@example.com"} type={"email"} />
+                    <Input
+                      {...field}
+                      placeholder={"anything@example.com"}
+                      type={"email"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )} />
-              <FormField control={form.control} name={"password"} render={({field}) => (
+              )}
+            />
+            <FormField
+              control={form.control}
+              name={"password"}
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder={"******"} type={"password"} />
+                    <Input
+                      {...field}
+                      placeholder={"******"}
+                      type={"password"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )} />
+              )}
+            />
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
