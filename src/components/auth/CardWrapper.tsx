@@ -19,7 +19,7 @@ interface CardWrapperProps {
   headerLabel: string;
   footerTextLabel: string;
   footerTextHref: string;
-  showSocial: boolean;
+  showSocial?: boolean;
 }
 
 const CardWrapper = ({
