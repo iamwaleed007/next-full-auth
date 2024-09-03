@@ -5,7 +5,9 @@ import React from "react";
 const page = () => {
   return (
     <div className="h-screen flex justify-center items-center">
-      <Link className={buttonVariants()} href={"/auth/login"}>
+      <Link className={buttonVariants({
+        variant: "secondary"
+      })} href={"/auth/login"}>
         Login
       </Link>
     </div>
